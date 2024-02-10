@@ -1,0 +1,10 @@
+version: '3'
+services:
+  clbb-io-modules:
+    container_name: clbb-io-modules
+    build: .
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./assets:/app/assets
+      - ./data:/app/data
