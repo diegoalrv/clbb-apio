@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     container_name: clbb_db
+    restart: always
     image: postgis/postgis
     environment:
       POSTGRES_DB: geodb
@@ -17,6 +18,7 @@ services:
 
   web:
     container_name: clbb_api
+    restart: always
     build: ./api
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
