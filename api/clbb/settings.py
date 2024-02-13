@@ -81,7 +81,7 @@ db_default = {}
 env_credentials = dj_database_url.config(default=os.getenv('DATABASE_URL'))
 env_credentials['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 db_default['default'] = env_credentials
-print(db_default)
+# print(db_default)
 DATABASES = db_default
 
 

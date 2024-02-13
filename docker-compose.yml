@@ -12,24 +12,28 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - clbb
 
   web:
+    container_name: clbb_api
     build: ./api
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./api:/app/api
-      - ./assets:/app/assets
+      - ./api:/app
+      - ./api/assets:/app/assets
     env_file:
       - ./api/.env
     ports:
       - "8000:8000"
     depends_on:
       - db
-    # environment:
-    #   DATABASE_HOST: db
-    #   DATABASE_NAME: geodb
-    #   DATABASE_USER: clbb
-    #   DATABASE_PASSWORD: pass123
+    networks:
+      - clbb
 
 volumes:
   postgres_data:
+
+networks:
+  clbb:
+    external: true

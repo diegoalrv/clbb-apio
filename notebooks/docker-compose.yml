@@ -3,8 +3,15 @@ services:
   clbb-io-modules:
     container_name: clbb-io-modules
     build: .
+    restart: always
     ports:
       - "9090:9090"
     volumes:
       - ./assets:/app/assets
       - ./data:/app/data
+    networks:
+      - clbb
+
+networks:
+  clbb:
+    external: true
