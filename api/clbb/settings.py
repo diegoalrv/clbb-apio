@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "backend",
+    "interactive",
+    "manager",
     "rest_framework",
     "django.contrib.gis",
 ]
