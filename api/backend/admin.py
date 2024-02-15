@@ -8,3 +8,6 @@ admin.site.register(LandUse)
 
 from backend.models.DiscreteDistribution import DiscreteDistribution
 admin.site.register(DiscreteDistribution)
+
+from backend.models.AreaOfInterest import AreaOfInterest
+admin.site.register(AreaOfInterest)

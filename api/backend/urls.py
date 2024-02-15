@@ -6,10 +6,12 @@ from backend.views.LandUse import LandUseViewSet
 router = DefaultRouter()
 router.register(r'landuse', LandUseViewSet)
 
+from backend.views.DiscreteDistribution import DiscreteDistributionViewSet
+router.register(r'discretedistribution', DiscreteDistributionViewSet)
+
+from backend.views.AreaOfInterest import AreaOfInterestViewSet
+router.register(r'areaofinterest', AreaOfInterestViewSet)
+
 urlpatterns = [
     path('', include(router.urls)),
 ]
-
-
-from backend.views.DiscreteDistribution import DiscreteDistributionViewSet
-router.register(r'discretedistribution', DiscreteDistributionViewSet)
