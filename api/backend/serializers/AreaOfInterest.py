@@ -5,3 +5,4 @@ class AreaOfInterestSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = AreaOfInterest
         fields = '__all__'
+        geo_field = 'geo_field'

@@ -5,3 +5,4 @@ class DiscreteDistributionSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = DiscreteDistribution
         fields = '__all__'
+        geo_field = 'geo_field'

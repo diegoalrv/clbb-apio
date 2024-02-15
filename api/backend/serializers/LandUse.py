@@ -6,3 +6,4 @@ class LandUseSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandUse
         fields = '__all__'
+        geo_field = 'geo_field'

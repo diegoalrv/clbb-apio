@@ -6,7 +6,7 @@ class DiscreteDistribution(models.Model):
     dist_type = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
     level = models.IntegerField()
-    geometry = models.PolygonField()
+    geo_field = models.PolygonField()
 
     def __str__(self):
         return self.name

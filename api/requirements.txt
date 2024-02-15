@@ -8,7 +8,9 @@ psycopg2-binary>=2.8
 djangorestframework>=3.12
 djangorestframework-gis
 django-cors-headers>=3.7
+
 # Dependencias para GeoDjango
 GDAL==3.6.2
 psycopg2
 dj_database_url
+drf-nested-routers

@@ -7,7 +7,7 @@ class Street(models.Model):
     length = models.DecimalField(max_digits=10, decimal_places=2)
     source = models.ForeignKey('Node', on_delete=models.CASCADE, related_name='source_of_street')
     destination = models.ForeignKey('Node', on_delete=models.CASCADE, related_name='destination_of_street')
-    geometry = models.LineStringField()
+    geo_field = models.LineStringField()
     tags = models.JSONField(blank=True, null=True)
 
     def __str__(self):
@@ -15,7 +15,7 @@ class Street(models.Model):
 
 class Node(models.Model):
     osm_id = models.BigIntegerField(primary_key=True)
-    geometry = models.PointField()
+    geo_field = models.PointField()
     tags = models.JSONField(blank=True, null=True)
 
     def __str__(self):
