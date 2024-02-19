@@ -9,8 +9,10 @@ admin.site.register(DiscreteDistribution)
 from backend.models.AreaOfInterest import AreaOfInterest
 admin.site.register(AreaOfInterest)
 
-from backend.models.RoadNetwork import RoadNetwork
+from backend.models.RoadNetwork import RoadNetwork, Street, Node
 admin.site.register(RoadNetwork)
+admin.site.register(Street)
+admin.site.register(Node)
 
 from backend.models.Amenity import Amenity
 admin.site.register(Amenity)
