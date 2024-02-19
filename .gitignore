@@ -1,3 +1,5 @@
 env/*
 assets/*
 notebooks/*/*
+*migrations*
+*pycache*

@@ -1,5 +1,5 @@
 from rest_framework_gis import serializers
-from api.backend.models.RoadNetwork import RoadNetwork, Street, Node
+from backend.models.RoadNetwork import RoadNetwork, Street, Node
 
 class NodeSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:

@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from api.backend.models.RoadNetwork import StreetNetwork, Street, Node
-from api.backend.serializers.RoadNetwork import RoadNetworkSerializer, StreetSerializer, NodeSerializer
+from backend.models.RoadNetwork import RoadNetwork, Street, Node
+from backend.serializers.RoadNetwork import RoadNetworkSerializer, StreetSerializer, NodeSerializer
 
 class StreetViewSet(viewsets.ModelViewSet):
     queryset = Street.objects.all()
@@ -11,5 +11,5 @@ class NodeViewSet(viewsets.ModelViewSet):
     serializer_class = NodeSerializer
     
 class RoadNetworkViewSet(viewsets.ModelViewSet):
-    queryset = StreetNetwork.objects.all()
+    queryset = RoadNetwork.objects.all()
     serializer_class = RoadNetworkSerializer

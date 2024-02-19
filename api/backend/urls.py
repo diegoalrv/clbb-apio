@@ -13,7 +13,7 @@ router.register(r'discretedistribution', DiscreteDistributionViewSet)
 from backend.views.AreaOfInterest import AreaOfInterestViewSet
 router.register(r'areaofinterest', AreaOfInterestViewSet)
 
-from api.backend.views.RoadNetwork import RoadNetworkViewSet, StreetViewSet, NodeViewSet
+from backend.views.RoadNetwork import RoadNetworkViewSet, StreetViewSet, NodeViewSet
 
 router.register(r'streetnetwork', RoadNetworkViewSet)
 streetnetwork_router = NestedDefaultRouter(router, r'streetnetwork', lookup='streetnetwork')
