@@ -1,5 +1,5 @@
 from rest_framework_gis import serializers
-from backend.models.StreetNetwork import StreetNetwork, Street, Node
+from api.backend.models.RoadNetwork import RoadNetwork, Street, Node
 
 class NodeSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
@@ -15,7 +15,7 @@ class StreetSerializer(serializers.GeoFeatureModelSerializer):
         geo_field = 'geo_field'
 
 
-class StreetNetworkSerializer(serializers.ModelSerializer):
+class RoadNetworkSerializer(serializers.ModelSerializer):
     class Meta:
-        model = StreetNetwork
+        model = RoadNetwork
         fields = '__all__'
