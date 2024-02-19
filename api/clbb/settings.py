@@ -42,14 +42,25 @@ INSTALLED_APPS = [
     "backend",
     "interactive",
     "manager",
+
     "rest_framework",
+    'corsheaders',
     "django.contrib.gis",
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True  # Permitir solicitudes CORS desde cualquier origen
+# o
+# CORS_ORIGIN_WHITELIST = [
+#     'http://mi-dominio-1.com',
+#     'https://mi-dominio-2.com',
+#     # Agrega todos los dominios permitidos aquí
+# ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
