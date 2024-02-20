@@ -18,4 +18,7 @@ class StreetSerializer(serializers.GeoFeatureModelSerializer):
 class RoadNetworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoadNetwork
-        fields = '__all__'
+        fields = ['id', 'name', 'mode','h5_file','tags']
+
+    def __str__(self):
+        return self.name
