@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "backend",
     "interactive",
     "manager",
+    'urban_indicators',
 
     "rest_framework",
     'corsheaders',

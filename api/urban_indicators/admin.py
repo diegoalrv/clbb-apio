@@ -10,3 +10,6 @@ admin.site.register(LineIndicator)
 
 from urban_indicators.models.PolygonIndicator import PolygonIndicator
 admin.site.register(PolygonIndicator)
+
+from urban_indicators.models.NumericIndicator import NumericIndicator
+admin.site.register(NumericIndicator)
