@@ -22,4 +22,6 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include('backend.urls')),
+    path("urban-indicators/", include('urban_indicators.urls')),
+    path("interactive/", include('interactive.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

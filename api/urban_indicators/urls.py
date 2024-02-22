@@ -13,8 +13,9 @@ router.register(r'lineindicator', LineIndicatorViewSet)
 from urban_indicators.views.PolygonIndicator import PolygonIndicatorViewSet
 router.register(r'polygonindicator', PolygonIndicatorViewSet)
 
+from urban_indicators.views.NumericIndicator import NumericIndicatorViewSet
+router.register(r'numericindicator', NumericIndicatorViewSet)
+
 urlpatterns = [
     path('', include(router.urls)),
 ]
-from urban_indicators.views.NumericIndicator import NumericIndicatorViewSet
-router.register(r'numericindicator', NumericIndicatorViewSet)
