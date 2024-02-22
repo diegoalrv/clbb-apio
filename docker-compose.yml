@@ -1,8 +1,8 @@
-version: '3.8'
+version: '3'
 
 services:
   db:
-    container_name: clbb_db
+    container_name: clbb-db
     restart: always
     image: postgis/postgis
     environment:
@@ -17,7 +17,7 @@ services:
       - clbb
 
   web:
-    container_name: clbb_api
+    container_name: clbb-api
     restart: always
     build: ./api
     command: python manage.py runserver 0.0.0.0:8000

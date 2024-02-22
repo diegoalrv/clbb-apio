@@ -25,7 +25,7 @@ class RoadNetwork(models.Model):
     name = models.CharField(max_length=100)
     streets = models.ManyToManyField(Street)
     mode = models.CharField(max_length=100)
-    h5_file = models.FileField(upload_to='media/h5_files/', blank=True, null=True)
+    h5_file = models.FileField(upload_to='h5_files/', blank=True, null=True)
     tags = models.JSONField(blank=True, null=True)
 
     def __str__(self):

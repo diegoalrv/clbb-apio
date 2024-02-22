@@ -3,3 +3,4 @@ assets/*
 notebooks/*/*
 *migrations*
 *pycache*
+*media*
