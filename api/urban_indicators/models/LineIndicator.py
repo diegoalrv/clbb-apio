@@ -9,4 +9,4 @@ class LineIndicator(models.Model):
     geo_field = models.LineStringField(null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.indicator_hash

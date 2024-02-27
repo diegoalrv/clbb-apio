@@ -9,4 +9,4 @@ class PolygonIndicator(models.Model):
     geo_field = models.PolygonField(blank=True, null=True)
     
     def __str__(self):
-        return self.name
+        return self.indicator_hash

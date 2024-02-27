@@ -1,12 +1,10 @@
 from django.contrib.gis.db import models
 
-class PointIndicator(models.Model):
+class IndicatorData(models.Model):
     id = models.AutoField(primary_key=True)
     indicator_name = models.CharField(max_length=100)
     indicator_hash = models.CharField(max_length=100)
-    value = models.FloatField(null=True, blank=True)
-    extra_properties = models.JSONField(blank=True, null=True)
-    geo_field = models.PointField(null=True, blank=True)
+    table_name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.indicator_hash

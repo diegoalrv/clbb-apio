@@ -8,4 +8,4 @@ class NumericIndicator(models.Model):
     extra_properties = models.JSONField(blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.indicator_hash

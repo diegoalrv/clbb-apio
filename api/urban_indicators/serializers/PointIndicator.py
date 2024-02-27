@@ -5,3 +5,4 @@ class PointIndicatorSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = PointIndicator
         fields = '__all__'
+        geo_field = 'geo_field'
