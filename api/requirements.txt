@@ -2,6 +2,7 @@ numpy
 pandas
 geopandas
 pyarrow
+sqlalchemy
 
 Django>=3.2,<4.0
 psycopg2-binary>=2.8
