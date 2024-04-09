@@ -33,12 +33,14 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
     def upload_to_table(self, request):
         indicator_name = request.data.get('indicator_name')
         indicator_hash = request.data.get('indicator_hash')
+        params = request.data.get('params')
         json_data = request.data.get('json_data')
 
         # Crear un objeto IndicatorData
         indicator_data = IndicatorData.objects.create(
             indicator_name=indicator_name,
             indicator_hash=indicator_hash,
+            params=params,
             is_geo=is_geojson(json_data)
         )
 
