@@ -4,3 +4,4 @@ notebooks/*
 *migrations*
 *pycache*
 *media*
+api/.env
