@@ -1,6 +1,6 @@
-env/*
-assets/*
-notebooks/*/*
-*migrations*
-*pycache*
-*media*
+api/assets/
+env*
+notebooks*
+migrations*
+__pycache__
+media
