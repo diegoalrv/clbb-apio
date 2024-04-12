@@ -19,8 +19,8 @@ RUN apt-get update \
 COPY . /app/
 
 # Expone el puerto que usa Django
-EXPOSE 8000
+EXPOSE 8001
 
 # Comando para ejecutar la aplicación
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
 # CMD ["ls"]
