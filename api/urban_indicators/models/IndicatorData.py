@@ -4,7 +4,7 @@ import json
 class IndicatorData(models.Model):
     id = models.AutoField(primary_key=True)
     indicator_name = models.CharField(max_length=100)
-    indicator_hash = models.CharField(max_length=100, unique=True)
+    indicator_hash = models.CharField(max_length=100)
     params = models.JSONField(default=dict, blank=True, null=True)
     is_geo = models.BooleanField(default=False)
 
