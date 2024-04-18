@@ -1,5 +1,5 @@
 from rest_framework_gis import serializers
-from api.backend.models.GreenArea import GreenArea
+from backend.models.GreenArea import GreenArea
 
 class GreenAreaSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
