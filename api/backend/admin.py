@@ -16,3 +16,6 @@ admin.site.register(Node)
 
 from backend.models.Amenity import Amenity
 admin.site.register(Amenity)
+
+from api.backend.models.GreenArea import GreenArea
+admin.site.register(GreenArea)

@@ -22,6 +22,9 @@ router.register(r'node', NodeViewSet, basename='node')
 from backend.views.Amenity import AmenityViewSet
 router.register(r'amenity', AmenityViewSet)
 
+from backend.views.GreenArea import GreenAreaViewSet
+router.register(r'greenarea', GreenAreaViewSet)
+
 urlpatterns = [
     path('', include(router.urls)),
 ]
