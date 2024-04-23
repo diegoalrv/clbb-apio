@@ -7,7 +7,7 @@ class Plate(models.Model):
     scenario = models.ForeignKey(Scenario, on_delete=models.SET_NULL, null=True, blank=True)
     code_number = models.CharField(max_length=50, null=True, blank=True)
     code_type = models.CharField(max_length=50, null=True, blank=True)
-    polygon = models.PolygonField(null=True, blank=True)
+    geometry = models.PolygonField(null=True, blank=True)
 
     def __str__(self):
         return self.name
