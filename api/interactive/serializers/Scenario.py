@@ -1,4 +1,3 @@
-# serializers.py
 from rest_framework_gis import serializers
 from interactive.models.Scenario import Scenario
 

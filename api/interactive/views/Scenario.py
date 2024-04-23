@@ -1,4 +1,3 @@
-# views.py
 from rest_framework import viewsets
 from interactive.models.Scenario import Scenario
 from interactive.serializers.Scenario import ScenarioSerializer

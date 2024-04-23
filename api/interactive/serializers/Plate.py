@@ -5,4 +5,4 @@ class PlateGeoSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Plate
         fields = '__all__'
-        geo_field = 'polygon'
+        geo_field = 'geometry'
