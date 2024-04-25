@@ -1,8 +1,12 @@
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from interactive.models.Plate import Plate
+from rest_framework import serializers
+from interactive.models.Plate import Plate, PlateScenario
 
-class PlateGeoSerializer(GeoFeatureModelSerializer):
+class PlateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plate
         fields = '__all__'
-        geo_field = 'geometry'
+
+class PlateScenarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlateScenario
+        fields = '__all__'

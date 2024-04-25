@@ -6,6 +6,7 @@ class Plate(models.Model):
     name = models.CharField(max_length=100)
     code_number = models.CharField(max_length=50, null=True, blank=True)
     code_type = models.CharField(max_length=50, null=True, blank=True)
+    geometry = models.PolygonField(null=True)
 
     def __str__(self):
         return self.name
