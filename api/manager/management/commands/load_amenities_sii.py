@@ -6,7 +6,8 @@ import json
 
 def load_data():
     # Cargar los datos de GeoPandas
-    gdf = gpd.read_parquet('/app/assets/amenities_sii_2024.parquet')
+    # gdf = gpd.read_parquet('/app/assets/amenities_sii_2024.parquet')
+    gdf = gpd.read_parquet('/app/assets/amenities_futuras_2024.parquet')
     gdf = gdf.to_crs(4326)
     # gdf.drop_duplicates(inplace=True)
     return gdf
@@ -14,7 +15,7 @@ def load_data():
 def upload_to_database():
     gdf = load_data()
 
-    Amenity.objects.all().delete()
+    # Amenity.objects.all().delete()
 
     puntos = [
         Amenity(

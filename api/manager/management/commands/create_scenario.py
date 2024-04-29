@@ -15,16 +15,26 @@ class Command(BaseCommand):
         street_network = RoadNetwork.objects.first()
 
         scenario, created = Scenario.objects.get_or_create(
-            name='actual',
+            name='futuro',
             defaults={
                 'street_network': street_network
             }
         )
 
-        if created:
-            scenario.amenities.set(amenities)
-            scenario.land_uses.set(land_uses)
-            scenario.green_areas.set(green_areas)
-            self.stdout.write(self.style.SUCCESS('Scenario "actual" creado exitosamente.'))
-        else:
-            self.stdout.write(self.style.WARNING('Scenario "actual" ya existe.'))
+        # Si el escenario ya existe, sobrescribe sus datos
+        if not created:
+            scenario.amenities.clear()
+            scenario.land_uses.clear()
+            scenario.green_areas.clear()
+
+        scenario.amenities.set(amenities)
+        scenario.land_uses.set(land_uses)
+        scenario.green_areas.set(green_areas)
+
+        # if created:
+        #     scenario.amenities.set(amenities)
+        #     scenario.land_uses.set(land_uses)
+        #     scenario.green_areas.set(green_areas)
+        #     self.stdout.write(self.style.SUCCESS('Scenario "actual" creado exitosamente.'))
+        # else:
+        #     self.stdout.write(self.style.WARNING('Scenario "actual" ya existe.'))
