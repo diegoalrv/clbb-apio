@@ -10,7 +10,7 @@ class Scenario(models.Model):
     land_uses = models.ManyToManyField(LandUse, blank=True)
     amenities = models.ManyToManyField(Amenity, blank=True)
     green_areas = models.ManyToManyField(GreenArea, blank=True)
-    street_network = models.ForeignKey(RoadNetwork, on_delete=models.CASCADE, blank=True, null=True)
+    road_network = models.ForeignKey(RoadNetwork, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
