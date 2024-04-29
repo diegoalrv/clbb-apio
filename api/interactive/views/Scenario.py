@@ -10,8 +10,8 @@ class ScenarioViewSet(viewsets.ModelViewSet):
     queryset = Scenario.objects.all()
     serializer_class = ScenarioSerializer
 
-    @action(detail=True, methods=['get'], url_path='data/(?P<data_type>[^/.]+)')
-    def get_data(self, request, pk=None, data_type=None):
+    @action(detail=False, methods=['get'], url_path='data/(?P<identifier>[^/.]+)/(?P<data_type>[^/.]+)')
+    def get_data(self, request, identifier=None, data_type=None):
         """
         This custom action returns data associated with a specific scenario based on the data type.
         """
@@ -21,7 +21,12 @@ class ScenarioViewSet(viewsets.ModelViewSet):
             model = data_mapping[data_type]['model']
             serializer_class = data_mapping[data_type]['serializer']
             
-            scenario = get_object_or_404(Scenario, pk=pk)
+            # Check if the identifier is a digit and hence an ID, else treat as a name
+            if identifier.isdigit():
+                scenario = get_object_or_404(Scenario, pk=identifier)
+            else:
+                scenario = get_object_or_404(Scenario, name=identifier)
+
             if relation_type == 'many_to_many':
                 data = getattr(scenario, data_type).all()
             elif relation_type == 'foreign_key' or relation_type == 'one_to_one':
