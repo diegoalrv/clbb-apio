@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from interactive.models.Project import Project
-from interactive.models.Plate import PlateScenario
+from interactive.models.Plate import Plate, PlateScenario
 from interactive.serializers.Project import ProjectSerializer
 from backend.serializers.AreaOfInterest import AreaOfInterestSerializer
 from backend.models.DiscreteDistribution import DiscreteDistribution
