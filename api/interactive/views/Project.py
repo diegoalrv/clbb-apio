@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from interactive.models.Project import Project
 from interactive.models.Plate import PlateScenario
 from interactive.serializers.Project import ProjectSerializer
+from backend.serializers.AreaOfInterest import AreaOfInterestSerializer
+from backend.models.DiscreteDistribution import DiscreteDistribution
+from backend.serializers.DiscreteDistribution import DiscreteDistributionSerializer
 from interactive.utils.config import data_mapping
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -52,3 +55,82 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return Response(data)
         else:
             return Response({"error": "Invalid data type"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'], url_path='get-project-id-by-name')
+    def get_project_id_by_name(self, request):
+        """
+        Returns the project ID for a project with the specified name.
+        """
+        project_name = request.query_params.get('name')
+        if not project_name:
+            return Response({'error': 'Name parameter is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            project = Project.objects.get(name=project_name)
+            return Response({'project_id': project.id})
+        except Project.DoesNotExist:
+            return Response({'error': 'Project not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+    @action(detail=True, methods=['get'], url_path='area-of-interest')
+    def get_area_of_interest(self, request, pk=None):
+        """
+        Returns the area of interest associated with the specified project.
+        """
+        project = self.get_object()
+        area_of_interest = project.area_of_interest
+        if area_of_interest:
+            serializer = AreaOfInterestSerializer(area_of_interest)
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'No area of interest associated with this project.'}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=True, methods=['get'], url_path='discrete-distributions')
+    def get_discrete_distributions(self, request, pk=None):
+        """
+        Returns the discrete distributions associated with the specified project,
+        with optional filtering by distribution type and level.
+        """
+        project = self.get_object()
+        distributions = project.discrete_distributions.all()
+
+        # Get filters from query parameters
+        dist_type = request.query_params.get('dist_type')
+        level = request.query_params.get('level')
+
+        # Apply filters if provided
+        if dist_type:
+            distributions = distributions.filter(dist_type=dist_type)
+        if level:
+            distributions = distributions.filter(level=level)
+
+        serializer = DiscreteDistributionSerializer(distributions, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'], url_path='update-plate-scenarios')
+    def update_plate_scenarios(self, request, pk=None):
+        """
+        Updates scenarios for all plates in the specified project based on provided scenario indices.
+        """
+        project = self.get_object()
+        data = request.data  # data should be a dict where key is plate_id and value is the scenario index
+
+        for plate_id, scenario_index in data.items():
+            try:
+                # Ensure the plate belongs to the project
+                plate = project.plates.get(id=plate_id)
+                scenarios = list(plate.platescenario_set.all())
+                
+                if scenario_index < len(scenarios):
+                    # Set all to inactive then activate the selected one
+                    for ps in scenarios:
+                        ps.is_active = False
+                        ps.save()
+
+                    scenarios[scenario_index].is_active = True
+                    scenarios[scenario_index].save()
+                else:
+                    return Response({'error': f'Invalid scenario index for plate {plate_id}'}, status=status.HTTP_400_BAD_REQUEST)
+            except Plate.DoesNotExist:
+                return Response({'error': f'Plate with id {plate_id} does not exist in this project'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({'message': 'Scenarios updated successfully for project plates'})

@@ -1,6 +1,6 @@
 from interactive.models.Scenario import Scenario
-from backend.models import Amenity, GreenArea, LandUse, RoadNetwork
-from backend.serializers import Amenity, GreenArea, LandUse, RoadNetwork
+from backend.models import Amenity, GreenArea, LandUse, RoadNetwork, DiscreteDistribution
+from backend.serializers import Amenity, GreenArea, LandUse, RoadNetwork, DiscreteDistribution
 
 # Diccionario que mapea los tipos de datos a modelos y serializadores
 data_mapping = {
