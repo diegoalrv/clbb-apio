@@ -4,7 +4,7 @@ from backend.models.AreaOfInterest import AreaOfInterest
 from shapely.geometry import Polygon
 
 # Cargar los datos de GeoPandas
-gdf = gpd.read_parquet('/app/assets/area_scope.parquet')
+gdf = gpd.read_parquet('/app/assets/area_of_interest_calcetin.parquet')
 gdf = gdf.to_crs(4326)
 # Función para convertir Polygon Z a Polygon
 def convert_polygon_z_to_polygon(geometry):
@@ -33,7 +33,7 @@ for index, row in gdf.iterrows():
 
         # Crear instancia del modelo LandUses y guardar en la base de datos
         area_of_interest = AreaOfInterest(
-            name=row['Name'],
+            name=row['name'],
             geo_field=geometry
         )
         area_of_interest.save()

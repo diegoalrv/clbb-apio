@@ -28,7 +28,7 @@ def load_edges_files(filename):
             # Generar un hash aleatorio para el nombre
             # Crear instancia del modelo Street y guardar en la base de datos
             edge = Street(
-                osm_id=row['osmid'],  # Usamos 'Category' para el campo 'category'
+                osm_id=row['osmid'],
                 length=row['length'],
                 source=source_node,
                 destination=destination_node,

@@ -4,7 +4,7 @@ from backend.models.GreenArea import GreenArea
 from shapely.geometry import Polygon
 
 # Cargar los datos de GeoPandas
-gdf = gpd.read_parquet('/app/assets/green_area_actual.parquet')
+gdf = gpd.read_parquet('/app/assets/green_areas_actual.parquet')
 gdf = gdf.to_crs(4326)
 # Función para convertir Polygon Z a Polygon
 def convert_polygon_z_to_polygon(geometry):
@@ -18,7 +18,7 @@ def convert_polygon_z_to_polygon(geometry):
 # Aplicar la función a cada geometría en la columna 'geometry'
 gdf['geometry'] = gdf['geometry'].apply(convert_polygon_z_to_polygon)
 
-# print(gdf)
+print(gdf.head())
 # Iterar sobre cada fila y guardar en la base de datos Django
 for index, row in gdf.iterrows():
     geometry = row.geometry
@@ -33,9 +33,9 @@ for index, row in gdf.iterrows():
 
         # Crear instancia del modelo LandUses y guardar en la base de datos
         green_area = GreenArea(
-            name=row['Name'],
+            name=row['name'],
             category=row['category'],
-            subcategory=row['subcategory'],
+            subcategory=None,
             geometry=geometry,
         )
         green_area.save()

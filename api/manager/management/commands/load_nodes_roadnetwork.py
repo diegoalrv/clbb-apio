@@ -24,7 +24,7 @@ def load_node_files(filename):
             # Generar un hash aleatorio para el nombre
             # Crear instancia del modelo node y guardar en la base de datos
             node = Node(
-                osm_id=row['osmid'],  # Usamos 'Category' para el campo 'category'
+                osm_id=row['osm_id'],  # Usamos 'Category' para el campo 'category'
                 geo_field=geometry
             )
             node.save()

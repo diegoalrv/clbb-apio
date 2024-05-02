@@ -12,12 +12,12 @@ class Command(BaseCommand):
         amenities = Amenity.objects.all()
         land_uses = LandUse.objects.all()
         green_areas = GreenArea.objects.all()
-        street_network = RoadNetwork.objects.first()
+        road_network = RoadNetwork.objects.first()
 
         scenario, created = Scenario.objects.get_or_create(
             name='futuro',
             defaults={
-                'street_network': street_network
+                'road_network': road_network
             }
         )
 

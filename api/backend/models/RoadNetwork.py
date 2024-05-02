@@ -5,8 +5,8 @@ class Street(models.Model):
     name = models.CharField(max_length=100,null=True, blank=True)
     osm_id = models.BigIntegerField(default=0)
     length = models.DecimalField(max_digits=10, decimal_places=2)
-    source = models.ForeignKey('Node', on_delete=models.CASCADE, related_name='source_of_street')
-    destination = models.ForeignKey('Node', on_delete=models.CASCADE, related_name='destination_of_street')
+    source = models.ForeignKey('Node', null=True, on_delete=models.SET_NULL, related_name='source_of_street')
+    destination = models.ForeignKey('Node', null=True, on_delete=models.SET_NULL, related_name='destination_of_street')
     geo_field = models.LineStringField()
     tags = models.JSONField(blank=True, null=True)
 
