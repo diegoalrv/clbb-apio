@@ -71,11 +71,11 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
             gdf = gpd.GeoDataFrame.from_features(json_data['features'])
             gdf['hash'] = indicator_hash
             gdf = gdf.set_crs(4326)
-            gdf.to_postgis(indicator_name, engine, if_exists='replace', index=False)
+            gdf.to_postgis(indicator_name, engine, if_exists='append', index=False)
         else:
             df = pd.DataFrame(json_data)
             df['hash'] = indicator_hash
-            df.to_sql(indicator_name, engine, if_exists='replace', index=False)
+            df.to_sql(indicator_name, engine, if_exists='append', index=False)
         pass
 
     @action(detail=False, methods=['get'])
