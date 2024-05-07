@@ -132,7 +132,7 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
         self.post_data_to_table(request)
 
         return Response({'message': 'Indicator updated successfully'})
-
+    
     def delete_indicator(self, indicator_name, indicator_hash):
         # Eliminar la entrada en IndicatorData
         indicator_data = IndicatorData.objects.filter(
@@ -142,6 +142,6 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
         if indicator_data:
             indicator_data.delete()
 
-        # Eliminar la tabla correspondiente
+        # Eliminar registros asociados en la tabla basada en indicator_name
         with connection.cursor() as cursor:
-            cursor.execute(f"DROP TABLE IF EXISTS {indicator_name}")
+            cursor.execute(f"DELETE FROM \"{indicator_name}\" WHERE hash = %s", [indicator_hash])
