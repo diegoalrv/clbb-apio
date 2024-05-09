@@ -152,7 +152,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         # Encontrar las Amenities y asociarlas al Scenario
         with transaction.atomic():
             amenities = Amenity.objects.filter(id__in=amenity_ids)
-            scenario.amenities.set(amenities)
+            scenario.amenities.add(*amenities)
             scenario.save()
 
         return Response({'message': f'Amenities successfully associated with scenario {scenario_id} of plate {plate_id}'})
