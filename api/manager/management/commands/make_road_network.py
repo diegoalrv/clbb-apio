@@ -30,7 +30,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('network_name', type=str, nargs='?', default='ccp', help='Network name to identify')
-        parser.add_argument('mode', type=str, nargs='?', default='walk', help='Wich kind of network you are settin up (walk, car, bicycle, railway)')
+        parser.add_argument('mode', type=str, nargs='?', default='walk', help='Which kind of network you are setting up (walk, car, bicycle, railway)')
 
     def handle(self, *args, **kwargs):        
         net = make_network(kwargs)
