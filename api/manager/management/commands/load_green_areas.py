@@ -4,7 +4,7 @@ from backend.models.GreenArea import GreenArea
 from shapely.geometry import Polygon
 
 # Cargar los datos de GeoPandas
-gdf = gpd.read_parquet('/app/assets/green_areas_actual.parquet')
+gdf = gpd.read_parquet('/app/assets/green_areas_future_export.parquet')
 gdf = gdf.to_crs(4326)
 # Función para convertir Polygon Z a Polygon
 def convert_polygon_z_to_polygon(geometry):

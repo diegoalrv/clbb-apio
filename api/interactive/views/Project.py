@@ -139,21 +139,52 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         return Response({'message': 'Scenarios updated successfully for project plates'})
 
-    @action(detail=True, methods=['post'], url_path='associate-amenities')
-    def associate_amenities(self, request, pk=None):
+    # @action(detail=True, methods=['post'], url_path='associate-amenities')
+    # def associate_amenities(self, request, pk=None):
+    #     plate_id = request.data.get('plate_id')
+    #     scenario_id = request.data.get('scenario_id')
+    #     amenity_ids = request.data.get('amenity_ids', [])
+
+    #     # Validar que el Plate y Scenario pertenecen al Project
+    #     plate = get_object_or_404(Plate, id=plate_id, project=pk)
+    #     scenario = get_object_or_404(Scenario, platescenario__plate=plate, id=scenario_id)
+
+    #     # Encontrar las Amenities y asociarlas al Scenario
+    #     with transaction.atomic():
+    #         amenities = Amenity.objects.filter(id__in=amenity_ids)
+    #         scenario.amenities.add(*amenities)
+    #         scenario.save()
+
+    #     return Response({'message': f'Amenities successfully associated with scenario {scenario_id} of plate {plate_id}'})
+    
+    @action(detail=True, methods=['post'], url_path='associate-data')
+    def associate_data(self, request, pk=None):
+        data_type = request.data.get('data_type')
         plate_id = request.data.get('plate_id')
         scenario_id = request.data.get('scenario_id')
-        amenity_ids = request.data.get('amenity_ids', [])
+        data_ids = request.data.get('data_ids', [])
+        print("Plate ID:", plate_id)
+        print("Scenario ID:", scenario_id)
+        print("Data IDs:", data_ids)
+        if data_type not in data_mapping:
+            return Response({'error': 'Invalid data type specified'}, status=400)
 
-        # Validar que el Plate y Scenario pertenecen al Project
+        config = data_mapping[data_type]
+        model = config['model']
+        relation_type = config['relation_type']
+
         plate = get_object_or_404(Plate, id=plate_id, project=pk)
         scenario = get_object_or_404(Scenario, platescenario__plate=plate, id=scenario_id)
 
-        # Encontrar las Amenities y asociarlas al Scenario
         with transaction.atomic():
-            amenities = Amenity.objects.filter(id__in=amenity_ids)
-            scenario.amenities.add(*amenities)
+            data_objects = model.objects.filter(id__in=data_ids)
+            print(data_objects)
+            if relation_type == 'many_to_many':
+                relation = getattr(scenario, data_type)
+                relation.add(*data_objects)
+            elif relation_type == 'foreign_key':
+                setattr(scenario, data_type, data_objects.first())
             scenario.save()
 
-        return Response({'message': f'Amenities successfully associated with scenario {scenario_id} of plate {plate_id}'})
+        return Response({'message': f'{data_type} successfully associated with scenario {scenario_id} of plate {plate_id}'})
 

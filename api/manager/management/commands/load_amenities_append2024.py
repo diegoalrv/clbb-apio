@@ -6,7 +6,7 @@ import json
 
 def load_data():
     # Cargar los datos de GeoPandas
-    gdf = gpd.read_parquet('/app/assets/amenities_futuras_080524.parquet')
+    gdf = gpd.read_parquet('/app/assets/am_faltantes_090524_export_server/futuro.parquet')
     gdf = gdf.to_crs(4326)
     # gdf.drop_duplicates(inplace=True)
     return gdf
