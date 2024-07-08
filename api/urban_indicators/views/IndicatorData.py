@@ -11,6 +11,7 @@ import json
 from shapely import wkt
 from shapely.geometry import Point
 from sqlalchemy import create_engine
+from django.db.utils import ProgrammingError
 
 from django.db import connection
 from rest_framework.decorators import action
@@ -100,6 +101,7 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
 
         # Convertir el queryset a una lista de valores
         field_values = list(queryset)
+        print(field_values)
         self.is_geo = field_values[0]
         pass
 
@@ -132,7 +134,7 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
         self.post_data_to_table(request)
 
         return Response({'message': 'Indicator updated successfully'})
-
+    
     def delete_indicator(self, indicator_name, indicator_hash):
         # Eliminar la entrada en IndicatorData
         indicator_data = IndicatorData.objects.filter(
@@ -142,6 +144,14 @@ class IndicatorDataViewSet(viewsets.ModelViewSet):
         if indicator_data:
             indicator_data.delete()
 
-        # Eliminar la tabla correspondiente
+        # Comprobar si la tabla existe antes de intentar eliminar registros
         with connection.cursor() as cursor:
-            cursor.execute(f"DROP TABLE IF EXISTS {indicator_name}")
+            cursor.execute("SELECT to_regclass(%s)", [indicator_name])
+            if cursor.fetchone()[0]:
+                # Si la tabla existe, ejecutar DELETE
+                try:
+                    cursor.execute(f"DELETE FROM \"{indicator_name}\" WHERE hash = %s", [indicator_hash])
+                except ProgrammingError as e:
+                    print(f"Error deleting data: {e}")
+            else:
+                print(f"Table {indicator_name} does not exist.")
