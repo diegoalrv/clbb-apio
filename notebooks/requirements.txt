@@ -16,3 +16,4 @@ openpyxl
 pyarrow
 h3
 python-geohash
+clbb-hermes
