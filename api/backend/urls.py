@@ -25,6 +25,10 @@ router.register(r'amenity', AmenityViewSet)
 from backend.views.GreenArea import GreenAreaViewSet
 router.register(r'greenarea', GreenAreaViewSet)
 
+from backend.views.Globals import UploadFileView, success_view
+
 urlpatterns = [
+    path('upload/', UploadFileView.as_view(), name='upload'),
+    path('success/', success_view, name='success'),
     path('', include(router.urls)),
 ]
