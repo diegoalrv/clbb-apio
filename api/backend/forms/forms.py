@@ -11,3 +11,6 @@ MODEL_CHOICES = [
 class UploadFileForm(forms.Form):
     file = forms.FileField()
     model_type = forms.ChoiceField(choices=MODEL_CHOICES)
+    
+class DownloadFileForm(forms.Form):
+    model_type = forms.ChoiceField(choices=MODEL_CHOICES)

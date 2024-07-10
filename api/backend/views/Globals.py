@@ -120,3 +120,49 @@ class UploadFileView(View):
 
 def success_view(request):
     return HttpResponse("Upload successful!")
+
+import json
+import tempfile
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views import View
+from django.core.serializers import serialize
+from forms.forms import DownloadFileForm
+from models import Amenity, AreaOfInterest, DiscreteDistribution, GreenArea, LandUse
+
+class DownloadFileView(View):
+    form_class = DownloadFileForm
+    template_name = 'download.html'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            model_type = form.cleaned_data['model_type']
+            return self.download_file(model_type)
+
+        return render(request, self.template_name, {'form': form})
+
+    def download_file(self, model_type):
+        model_mapping = {
+            'Amenity': Amenity.Amenity,
+            'AreaOfInterest': AreaOfInterest.AreaOfInterest,
+            'DiscreteDistribution': DiscreteDistribution.DiscreteDistribution,
+            'GreenArea': GreenArea.GreenArea,
+            'LandUse': LandUse.LandUse,
+        }
+
+        model_class = model_mapping.get(model_type)
+        if not model_class:
+            raise ValueError(f"Unsupported model type: {model_type}")
+
+        # Serializar los datos a GeoJSON
+        data = serialize('geojson', model_class.objects.all())
+
+        # Crear una respuesta HTTP con el archivo
+        response = HttpResponse(data, content_type='application/json')
+        response['Content-Disposition'] = f'attachment; filename={model_type}.geojson'
+        return response

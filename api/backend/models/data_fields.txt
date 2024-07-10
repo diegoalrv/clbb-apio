@@ -1,0 +1,19 @@
+Amenity
+    "name": Texto, obligatorio
+    "category": Texto, opcional
+    "subcategory": Texto, opcional
+    "geo_field": Geometria (punto) obligatorio EPSG:4326
+
+AreaOfInterest
+    "name": Texto, obligatorio
+    "geo_field": Geometria (poligono) obligatorio EPSG:4326
+
+GreenArea
+    "name": Texto, obligatorio
+    "category": Texto, opcional
+    "subcategory": Texto, opcional
+    "geometry": Geometria (poligono) obligatorio EPSG:4326
+
+LandUse
+    "use": Texto, obligatorio
+    "geo_field": Geometria (poligono) obligatorio EPSG:4326
