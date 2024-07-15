@@ -127,8 +127,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.core.serializers import serialize
-from forms.forms import DownloadFileForm
-from models import Amenity, AreaOfInterest, DiscreteDistribution, GreenArea, LandUse
+from backend.forms.forms import DownloadFileForm
+from backend.models import Amenity, AreaOfInterest, DiscreteDistribution, GreenArea, LandUse
 
 class DownloadFileView(View):
     form_class = DownloadFileForm
