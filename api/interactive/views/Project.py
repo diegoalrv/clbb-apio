@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from interactive.models.Project import Project
 from interactive.models.Scenario import Scenario
@@ -10,13 +10,18 @@ from backend.models.DiscreteDistribution import DiscreteDistribution
 from backend.models.Amenity import Amenity
 from backend.serializers.DiscreteDistribution import DiscreteDistributionSerializer
 from interactive.utils.config import data_mapping
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.db import transaction
+from django.http import JsonResponse
+from interactive.forms.ProjectForm import ProjectForm
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
+    ###########################################
+    #### HEADLESS API
+    ###########################################
     @action(detail=True, methods=['get'], url_path='project-status')
     def get_project_status(self, request, pk=None):
         """
@@ -188,3 +193,22 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         return Response({'message': f'{data_type} successfully associated with scenario {scenario_id} of plate {plate_id}'})
 
+    ###########################################
+    #### USER INTERACTION THROUGH DJANGO FORMS
+    ###########################################
+    
+    @action(detail=False, methods=['post'], url_path='create')
+    def create_project(self, request):
+        form = ProjectForm(request.data)
+        if form.is_valid():
+            project = form.save()
+            return JsonResponse({'success': True, 'project': {'id': project.id, 'name': project.name}})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+    @action(detail=False, methods=['get'], url_path='form')
+    def project_form(self, request):
+        form = ProjectForm()
+        projects = Project.objects.all()
+        return render(request, 'create_project.html', {'form': form, 'projects': projects})
+    

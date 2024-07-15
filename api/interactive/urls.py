@@ -13,6 +13,7 @@ router.register(r'platescenario', PlateScenarioViewSet)
 from interactive.views.Project import ProjectViewSet
 router.register(r'project', ProjectViewSet)
 
-urlpatterns = [
+urlpatterns = [    
     path('', include(router.urls)),
+    path('project/create/', ProjectViewSet.as_view({'post': 'create_project'}), name='project-create'),
 ]

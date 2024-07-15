@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Project</title>
+    <style>
+        /* Agrega aquí tus estilos CSS */
+    </style>
+</head>
+<body>
+    <h1>Create a New Project</h1>
+    <form id="createProjectForm" method="POST" action="{% url 'project-create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Project</button>
+    </form>
+
+    <h2>Existing Projects</h2>
+    <ul id="projectList">
+        {% for project in projects %}
+        <li>{{ project.id }} - {{ project.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        // JavaScript para refrescar la lista de proyectos después de crear uno nuevo
+        document.getElementById('createProjectForm').onsubmit = function(event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const projectList = document.getElementById('projectList');
+                    const newProject = document.createElement('li');
+                    newProject.textContent = data.project.id + " - " + data.project.name;
+                    projectList.appendChild(newProject);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
