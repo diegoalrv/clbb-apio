@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate New Plate</title>
+    <style>
+        /* Add your CSS styles here */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate New Plate</h1>
+    
+    <form id="selectProjectForm">
+        <label for="projectSelect">Select Project:</label>
+        <select id="projectSelect" name="project">
+            {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" id="nextButton">Next</button>
+    </form>
+
+    <div id="methodSelection" class="hidden">
+        <h2>Select Method to Add Plates</h2>
+        <label>
+            <input type="radio" name="action_choice" value="select"> Select Existing Plate
+        </label>
+        <label>
+            <input type="radio" name="action_choice" value="upload"> Upload GeoJSON
+        </label>
+    </div>
+
+    <div id="select-existing" class="hidden">
+        <h2>Select Existing Plate</h2>
+        <form id="associatePlateForm" method="POST" action="{% url 'plate-associate' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="projectInputSelect" name="project">
+            {{ associate_form.plate }}
+            <button type="submit">Associate Plate</button>
+        </form>
+    </div>
+
+    <div id="upload-new" class="hidden">
+        <h2>Upload GeoJSON</h2>
+        <form id="uploadPlateForm" method="POST" action="{% url 'plate-associate' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="projectInputUpload" name="project">
+            {{ associate_form.upload_geojson }}
+            <button type="submit">Upload Plate</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to handle form logic
+        document.getElementById('nextButton').onclick = function() {
+            const projectSelect = document.getElementById('projectSelect');
+            const selectedProject = projectSelect.value;
+            if (selectedProject) {
+                document.getElementById('projectInputSelect').value = selectedProject;
+                document.getElementById('projectInputUpload').value = selectedProject;
+                document.getElementById('selectProjectForm').classList.add('hidden');
+                document.getElementById('methodSelection').classList.remove('hidden');
+            } else {
+                alert('Please select a project.');
+            }
+        };
+
+        document.querySelectorAll('input[name="action_choice"]').forEach((elem) => {
+            elem.addEventListener("change", function(event) {
+                const value = event.target.value;
+                document.getElementById('select-existing').classList.toggle('hidden', value !== 'select');
+                document.getElementById('upload-new').classList.toggle('hidden', value !== 'upload');
+            });
+        });
+
+        document.getElementById('associatePlateForm').onsubmit = function(event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Error associating plate: ' + JSON.stringify(data.errors));
+                }
+            });
+        };
+
+        document.getElementById('uploadPlateForm').onsubmit = function(event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Error uploading plate: ' + JSON.stringify(data.errors));
+                }
+            });
+        };
+    </script>
+</body>
+</html>

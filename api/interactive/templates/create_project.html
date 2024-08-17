@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Create a New Project</h1>
-    <form id="createProjectForm" method="POST" action="{% url 'project-create' %}">
+    <form id="createProjectForm" method="POST" action="{% url 'project-create' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create Project</button>

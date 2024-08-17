@@ -14,6 +14,14 @@ from django.shortcuts import get_object_or_404, render
 from django.db import transaction
 from django.http import JsonResponse
 from interactive.forms.ProjectForm import ProjectForm
+from interactive.forms.PlateForm import PlateForm, AssociatePlateForm
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.uploadedfile import UploadedFile
+import json
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
+from backend.models.AreaOfInterest import AreaOfInterest
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
@@ -198,10 +206,36 @@ class ProjectViewSet(viewsets.ModelViewSet):
     ###########################################
     
     @action(detail=False, methods=['post'], url_path='create')
+    @csrf_exempt
     def create_project(self, request):
-        form = ProjectForm(request.data)
+        form = ProjectForm(request.data, request.FILES)
         if form.is_valid():
-            project = form.save()
+            project = form.save(commit=False)
+
+            upload_geojson = request.FILES.get('upload_geojson')
+            
+            if upload_geojson:
+                import geopandas as gpd
+                # Parse the uploaded GeoJSON
+                gdf = gpd.read_file(upload_geojson)
+                try:
+                    name = gdf['name'][0]
+                except KeyError:
+                    name = form.cleaned_data.get('name')
+
+                geometry = gdf['geometry'][0]
+
+                geo_field = GEOSGeometry(json.dumps(geometry.__geo_interface__))                    
+                area_of_interest = AreaOfInterest.objects.create(name=name, geo_field=geo_field)           
+            else:
+                area_of_interest = form.cleaned_data.get('select_area_of_interest')
+
+            project.area_of_interest = area_of_interest
+            project.save()
+
+            # Create initial Plate using the same AreaOfInterest
+            initial_plate = Plate.objects.create(name=f'Initial Plate for {project.name}', geometry=area_of_interest.geo_field)
+            project.plates.add(initial_plate)
             return JsonResponse({'success': True, 'project': {'id': project.id, 'name': project.name}})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
@@ -212,3 +246,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
         projects = Project.objects.all()
         return render(request, 'create_project.html', {'form': form, 'projects': projects})
     
+    @action(detail=False, methods=['get'], url_path='form-plate')
+    def plate_form(self, request):
+        plate_form = PlateForm()
+        associate_form = AssociatePlateForm()
+        projects = Project.objects.all()
+        return render(request, 'create_or_associate_plate.html', {'plate_form': plate_form, 'associate_form': associate_form, 'projects': projects})
