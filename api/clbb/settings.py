@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "interactive",
     "manager",
     'urban_indicators',
+    'waze_app',
 
     "rest_framework",
     'corsheaders',
